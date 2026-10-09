@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#f7f7f5" />
-  <meta name="description" content="Avaliação digital de inglês" />
+  <meta name="description" content="Avaliação diagnóstica digital de inglês" />
   <title>Avaliação de Inglês</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -12,9 +12,9 @@
   <main class="app-shell">
     <section id="startScreen" class="screen start-screen" aria-labelledby="pageTitle">
       <div class="brand-mark" aria-hidden="true">EN</div>
-      <p class="eyebrow">Avaliação digital</p>
+      <p class="eyebrow">Avaliação diagnóstica</p>
       <h1 id="pageTitle">English Assessment</h1>
-      <p class="lead">Responda às questões com calma. Você pode voltar e alterar suas respostas antes de enviar.</p>
+      <p class="lead">A avaliação reúne questões de uso da língua e vocabulário, leitura e duas produções escritas. O progresso é salvo automaticamente neste dispositivo.</p>
 
       <form id="studentForm" class="student-form">
         <label>
@@ -25,43 +25,40 @@
       </form>
 
       <div class="assessment-meta" aria-label="Informações da avaliação">
-        <span id="startQuestionCount">30 questões</span>
-        <span>Progresso salvo automaticamente</span>
+        <span>40 questões objetivas</span>
+        <span>2 leituras</span>
+        <span>2 escritas</span>
+        <span>≈ 60–70 min</span>
       </div>
     </section>
 
     <section id="quizScreen" class="screen quiz-screen is-hidden" aria-live="polite">
       <header class="quiz-header">
         <div>
-          <p class="eyebrow">Avaliação de inglês</p>
+          <p class="eyebrow">Parte 1 · Uso da língua</p>
           <p id="studentSummary" class="student-summary"></p>
         </div>
         <div class="quiz-header-actions">
-          <span id="questionCounter" class="question-counter">1 / 30</span>
+          <span id="questionCounter" class="question-counter">1 / 40</span>
           <button id="settingsButton" class="icon-button" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="settingsMenu">
-            <svg viewBox="0 0 24 24" aria-hidden="true" style="fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round">
-              <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.09a2 2 0 0 1 1 1.74v.5a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.09a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2Z"/>
-              <circle cx="12" cy="12" r="3"/>
-            </svg>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.09a2 2 0 0 1 1 1.74v.5a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.09a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2Z"/><circle cx="12" cy="12" r="3"/></svg>
           </button>
         </div>
       </header>
 
       <div id="settingsMenu" class="settings-menu is-hidden" role="menu">
         <p>Opções</p>
-        <div class="menu-info" aria-label="Salvamento automático">
+        <div class="menu-info">
           <span>Progresso salvo automaticamente</span>
-          <small>As respostas ficam neste dispositivo mesmo se você sair ou atualizar a página.</small>
+          <small>Suas respostas e textos permanecem neste dispositivo se você sair ou atualizar a página.</small>
         </div>
         <button id="resetAssessmentButton" class="menu-danger" type="button" role="menuitem">
           <span>Apagar respostas e voltar ao início</span>
-          <small>Reinicia esta avaliação neste dispositivo</small>
+          <small>Reinicia toda a avaliação neste dispositivo</small>
         </button>
       </div>
 
-      <div class="progress-track" aria-hidden="true">
-        <div id="progressBar" class="progress-bar"></div>
-      </div>
+      <div class="progress-track" aria-hidden="true"><div id="progressBar" class="progress-bar"></div></div>
 
       <article class="question-card">
         <div class="question-meta-row">
@@ -69,6 +66,7 @@
           <p id="questionType" class="question-type"></p>
         </div>
         <h2 id="questionText"></h2>
+        <div id="questionContext"></div>
         <div id="questionInteraction"></div>
         <div id="questionVisual"></div>
         <div id="options" class="options" role="radiogroup" aria-labelledby="questionText"></div>
@@ -79,42 +77,86 @@
       <nav class="quiz-nav" aria-label="Navegação entre questões">
         <button id="prevButton" class="button button-secondary" type="button">Anterior</button>
         <button id="nextButton" class="button button-primary" type="button">Próxima</button>
-        <button id="submitButton" class="button button-primary is-hidden" type="button">Enviar avaliação</button>
+        <button id="toReadingButton" class="button button-primary is-hidden" type="button">Ir para leitura</button>
       </nav>
 
       <button id="overviewButton" class="overview-link" type="button">Ver questões respondidas</button>
       <div id="overview" class="overview is-hidden" aria-label="Mapa de questões"></div>
     </section>
 
+    <section id="readingScreen" class="screen is-hidden" aria-labelledby="readingTitle">
+      <header class="stage-header">
+        <div>
+          <p class="eyebrow">Parte 2 · Leitura</p>
+          <h1 id="readingTitle">Reading</h1>
+          <p class="lead compact">Leia os dois textos e responda às quatro perguntas de cada um.</p>
+        </div>
+        <button class="icon-button stage-reset-button" type="button" aria-label="Apagar respostas e voltar ao início">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.09a2 2 0 0 1 1 1.74v.5a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.09a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2Z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
+      </header>
+      <div id="readingContainer" class="reading-container"></div>
+      <div id="readingMessage" class="quiz-message" role="status"></div>
+      <nav class="stage-nav">
+        <button id="backToQuizButton" class="button button-secondary" type="button">Voltar às questões</button>
+        <button id="toWritingButton" class="button button-primary" type="button">Ir para escrita</button>
+      </nav>
+    </section>
+
+    <section id="writingScreen" class="screen is-hidden" aria-labelledby="writingTitle">
+      <header class="stage-header">
+        <div>
+          <p class="eyebrow">Parte 3 · Escrita</p>
+          <h1 id="writingTitle">Writing</h1>
+          <p class="lead compact">Escreva em inglês. Não há correção automática desta parte; os textos serão enviados junto com o resultado.</p>
+        </div>
+        <button class="icon-button stage-reset-button" type="button" aria-label="Apagar respostas e voltar ao início">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.09a2 2 0 0 1 1 1.74v.5a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l-.22-.38a2 2 0 0 0 .73-2.73l-.15-.09a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2Z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
+      </header>
+      <div id="writingContainer" class="writing-container"></div>
+      <div id="writingMessage" class="quiz-message" role="status"></div>
+      <nav class="stage-nav">
+        <button id="backToReadingButton" class="button button-secondary" type="button">Voltar à leitura</button>
+        <button id="finishAssessmentButton" class="button button-primary" type="button">Finalizar avaliação</button>
+      </nav>
+    </section>
+
     <section id="resultScreen" class="screen result-screen is-hidden" aria-labelledby="resultTitle">
       <div class="result-topbar">
         <div class="result-badge" aria-hidden="true">✓</div>
-        <button id="resultSettingsButton" class="icon-button" type="button" aria-label="Voltar ao início e apagar respostas">
-          <svg viewBox="0 0 24 24" aria-hidden="true" style="fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round">
-            <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.09a2 2 0 0 1 1 1.74v.5a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.09a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2Z"/>
-            <circle cx="12" cy="12" r="3"/>
-          </svg>
+        <button id="resultSettingsButton" class="icon-button" type="button" aria-label="Apagar respostas e voltar ao início">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.09a2 2 0 0 1 1 1.74v.5a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.09a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2Z"/><circle cx="12" cy="12" r="3"/></svg>
         </button>
       </div>
       <p class="eyebrow">Avaliação concluída</p>
-      <h1 id="resultTitle">Resultado</h1>
+      <h1 id="resultTitle">Resultado automático</h1>
       <p id="resultStudent" class="result-student"></p>
 
       <div class="score-card">
-        <span id="scoreValue" class="score-value">0/30</span>
+        <span id="scoreValue" class="score-value">0/48</span>
         <span id="scorePercent" class="score-percent">0%</span>
+        <small>Questões objetivas + leitura. A escrita e a parte oral são avaliadas separadamente.</small>
       </div>
 
-      <div id="levelFeedback" class="level-feedback"></div>
-      <div id="sectionResults" class="section-results"></div>
+      <div class="result-grid">
+        <section>
+          <h2>Evidência por faixa</h2>
+          <div id="levelResults" class="section-results"></div>
+        </section>
+        <section>
+          <h2>Competências automáticas</h2>
+          <div id="skillResults" class="section-results"></div>
+        </section>
+      </div>
 
       <div class="result-actions">
         <button id="shareResultsButton" class="button button-share" type="button">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V3m0 0L7 8m5-5 5 5M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>
-          <span>Compartilhar acertos</span>
+          <span>Compartilhar acertos e escritos</span>
         </button>
         <p id="shareStatus" class="share-status" role="status" aria-live="polite"></p>
-        <button id="restartButton" class="button button-secondary" type="button">Voltar ao início</button>
+        <button id="restartButton" class="button button-secondary" type="button">Apagar e recomeçar</button>
       </div>
     </section>
   </main>
@@ -123,7 +165,7 @@
     <form method="dialog">
       <div class="dialog-icon" aria-hidden="true">↺</div>
       <h2>Reiniciar avaliação?</h2>
-      <p>As respostas salvas neste dispositivo serão apagadas e você voltará à tela inicial.</p>
+      <p>As questões, leituras e textos salvos neste dispositivo serão apagados.</p>
       <div class="dialog-actions">
         <button class="button button-secondary" value="cancel">Cancelar</button>
         <button id="confirmResetButton" class="button button-danger" value="confirm">Apagar e voltar</button>
