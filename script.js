@@ -1,42 +1,42 @@
 const questions = [
-  { section: "Fundamentos · A1", type: "complete", text: "Choose the option that completes the sentence.", template: "Maria is my friend. {{answer}} is very nice.", options: ["He", "She", "It", "They"], answer: 1 },
-  { section: "Fundamentos · A1", type: "complete", text: "Choose the option that completes the sentence.", template: "My parents {{answer}} at home.", options: ["am", "is", "are", "be"], answer: 2 },
-  { section: "Fundamentos · A1", type: "choice", text: "Choose the correct question.", options: ["You are happy?", "Are you happy?", "Is you happy?", "Do you are happy?"], answer: 1 },
-  { section: "Fundamentos · A1", type: "choice", text: "Choose the correct negative sentence.", options: ["He not is tired.", "He doesn’t tired.", "He isn’t tired.", "He don’t tired."], answer: 2 },
-  { section: "Fundamentos · A1", type: "choice", text: "Which sentence is correct?", options: ["I have something for you.", "I have anything for you.", "I am something for you.", "I has something for you."], answer: 0 },
-  { section: "Fundamentos · A1", type: "complete", text: "Choose the option that completes the sentence.", template: "This is John. {{answer}} favorite color is blue.", options: ["Her", "His", "Their", "Its"], answer: 1 },
-  { section: "Fundamentos · A1", type: "choice", text: "What comes after Wednesday?", options: ["Tuesday", "Friday", "Thursday", "Sunday"], answer: 2 },
-  { section: "Fundamentos · A1", type: "choice", text: "Choose the best answer to: “How’s the weather today?”", options: ["It’s Monday.", "It’s sunny.", "It’s July.", "It’s twelve."], answer: 1 },
+  { id: "q001", section: "Fundamentos · A1", type: "complete", text: "Choose the option that completes the sentence.", template: "Maria is my friend. {{answer}} is very nice.", options: ["He", "She", "It", "They"], answer: 1 },
+  { id: "q002", section: "Fundamentos · A1", type: "complete", text: "Choose the option that completes the sentence.", template: "My parents {{answer}} at home.", options: ["am", "is", "are", "be"], answer: 2 },
+  { id: "q003", section: "Fundamentos · A1", type: "choice", text: "Choose the correct question.", options: ["You are happy?", "Are you happy?", "Is you happy?", "Do you are happy?"], answer: 1 },
+  { id: "q004", section: "Fundamentos · A1", type: "choice", text: "Choose the correct negative sentence.", options: ["He not is tired.", "He doesn’t tired.", "He isn’t tired.", "He don’t tired."], answer: 2 },
+  { id: "q005", section: "Fundamentos · A1", type: "choice", text: "Which sentence is correct?", options: ["I have something for you.", "I have anything for you.", "I am something for you.", "I has something for you."], answer: 0 },
+  { id: "q006", section: "Fundamentos · A1", type: "complete", text: "Choose the option that completes the sentence.", template: "This is John. {{answer}} favorite color is blue.", options: ["Her", "His", "Their", "Its"], answer: 1 },
+  { id: "q007", section: "Fundamentos · A1", type: "choice", text: "What comes after Wednesday?", options: ["Tuesday", "Friday", "Thursday", "Sunday"], answer: 2 },
+  { id: "q008", section: "Fundamentos · A1", type: "choice", text: "Choose the best answer to: “How’s the weather today?”", options: ["It’s Monday.", "It’s sunny.", "It’s July.", "It’s twelve."], answer: 1 },
 
-  { section: "Estruturas · A1–A2", type: "complete", text: "Choose the option that completes the sentence.", template: "{{answer}} a book on the table.", options: ["There are", "There is", "Are there", "They are"], answer: 1 },
-  { section: "Estruturas · A1–A2", type: "complete", text: "Choose the option that completes the sentence.", template: "{{answer}} three students in the classroom.", options: ["There is", "Is there", "There are", "It is"], answer: 2 },
-  { section: "Estruturas · A1–A2", type: "complete", text: "Choose the correct preposition.", template: "The cat is {{answer}} the table.", options: ["under", "between", "behind", "far"], answer: 0, visual: "cat-under-table" },
-  { section: "Estruturas · A1–A2", type: "choice", text: "Choose the Present Continuous sentence.", options: ["She studies English.", "She is studying English.", "She studied English.", "She will study English."], answer: 1 },
-  { section: "Estruturas · A1–A2", type: "complete", text: "Choose the option that completes the sentence.", template: "Look at those dark clouds! It {{answer}} rain.", options: ["is going to", "was", "did", "has"], answer: 0 },
-  { section: "Estruturas · A1–A2", type: "choice", text: "Someone says: “There’s no milk!” You decide at that moment to buy some. Choose the best answer.", options: ["I was buying some.", "I’m going buy some.", "I’ll buy some.", "I bought some."], answer: 2 },
-  { section: "Estruturas · A1–A2", type: "complete", text: "Choose the pair that completes the sentence.", template: "Yesterday, Sarah {{0}} at school, but her friends {{1}} at home.", options: ["were / was", "was / were", "is / are", "did / were"], fills: [["were", "was"], ["was", "were"], ["is", "are"], ["did", "were"]], answer: 1 },
-  { section: "Estruturas · A1–A2", type: "complete", text: "Choose the option that completes the question.", template: "Where {{answer}} you go yesterday?", options: ["were", "are", "did", "do"], answer: 2 },
+  { id: "q009", section: "Estruturas · A1–A2", type: "complete", text: "Choose the option that completes the sentence.", template: "{{answer}} a book on the table.", options: ["There are", "There is", "Are there", "They are"], answer: 1 },
+  { id: "q010", section: "Estruturas · A1–A2", type: "complete", text: "Choose the option that completes the sentence.", template: "{{answer}} three students in the classroom.", options: ["There is", "Is there", "There are", "It is"], answer: 2 },
+  { id: "q011", section: "Estruturas · A1–A2", type: "complete", text: "Choose the correct preposition.", template: "The cat is {{answer}} the table.", options: ["under", "between", "behind", "far"], answer: 0, visual: "cat-under-table" },
+  { id: "q012", section: "Estruturas · A1–A2", type: "choice", text: "Choose the Present Continuous sentence.", options: ["She studies English.", "She is studying English.", "She studied English.", "She will study English."], answer: 1 },
+  { id: "q013", section: "Estruturas · A1–A2", type: "complete", text: "Choose the option that completes the sentence.", template: "Look at those dark clouds! It {{answer}} rain.", options: ["is going to", "was", "did", "has"], answer: 0 },
+  { id: "q014", section: "Estruturas · A1–A2", type: "choice", text: "Someone says: “There’s no milk!” You decide at that moment to buy some. Choose the best answer.", options: ["I was buying some.", "I’m going buy some.", "I’ll buy some.", "I bought some."], answer: 2 },
+  { id: "q015", section: "Estruturas · A1–A2", type: "complete", text: "Choose the pair that completes the sentence.", template: "Yesterday, Sarah {{0}} at school, but her friends {{1}} at home.", options: ["were / was", "was / were", "is / are", "did / were"], fills: [["were", "was"], ["was", "were"], ["is", "are"], ["did", "were"]], answer: 1 },
+  { id: "q016", section: "Estruturas · A1–A2", type: "complete", text: "Choose the option that completes the question.", template: "Where {{answer}} you go yesterday?", options: ["were", "are", "did", "do"], answer: 2 },
 
-  { section: "Uso da língua · A2", type: "complete", text: "Choose the correct comparative.", template: "My brother is {{answer}} than me.", options: ["tall", "tallest", "taller", "more tall"], answer: 2 },
-  { section: "Uso da língua · A2", type: "complete", text: "Choose the correct superlative.", template: "This is the {{answer}} building in the city.", options: ["tall", "taller", "tallest", "most tall"], answer: 2 },
-  { section: "Uso da língua · A2", type: "complete", text: "Choose the option that completes the sentence.", template: "This restaurant is {{answer}} than that one.", options: ["more expensive", "expensiver", "most expensive", "expensive more"], answer: 0 },
-  { section: "Uso da língua · A2", type: "complete", text: "Choose the correct possessive word.", template: "This cellphone belongs to Sarah. It is {{answer}}.", options: ["her", "hers", "she", "his"], answer: 1 },
-  { section: "Uso da língua · A2", type: "choice", text: "Choose the correct sentence.", options: ["Our house is bigger than theirs.", "Ours house is bigger than their.", "Our house is more big than they.", "Ours house is biggest than theirs."], answer: 0 },
-  { section: "Uso da língua · A2", type: "choice", text: "Which sentence refers to a past life experience?", options: ["I have traveled to many countries.", "I travel tomorrow.", "I am travel yesterday.", "I will traveled last year."], answer: 0 },
-  { section: "Uso da língua · A2", type: "complete", text: "Choose the option that completes the sentence.", template: "When I was a child, I {{answer}} soccer every day.", options: ["play", "played", "playing", "plays"], answer: 1 },
+  { id: "q017", section: "Uso da língua · A2", type: "complete", text: "Choose the correct comparative.", template: "My brother is {{answer}} than me.", options: ["tall", "tallest", "taller", "more tall"], answer: 2 },
+  { id: "q018", section: "Uso da língua · A2", type: "complete", text: "Choose the correct superlative.", template: "This is the {{answer}} building in the city.", options: ["tall", "taller", "tallest", "most tall"], answer: 2 },
+  { id: "q019", section: "Uso da língua · A2", type: "complete", text: "Choose the option that completes the sentence.", template: "This restaurant is {{answer}} than that one.", options: ["more expensive", "expensiver", "most expensive", "expensive more"], answer: 0 },
+  { id: "q020", section: "Uso da língua · A2", type: "complete", text: "Choose the correct possessive word.", template: "This cellphone belongs to Sarah. It is {{answer}}.", options: ["her", "hers", "she", "his"], answer: 1 },
+  { id: "q021", section: "Uso da língua · A2", type: "choice", text: "Choose the correct sentence.", options: ["Our house is bigger than theirs.", "Ours house is bigger than their.", "Our house is more big than they.", "Ours house is biggest than theirs."], answer: 0 },
+  { id: "q022", section: "Uso da língua · A2", type: "choice", text: "Which sentence refers to a past life experience?", options: ["I have traveled to many countries.", "I travel tomorrow.", "I am travel yesterday.", "I will traveled last year."], answer: 0 },
+  { id: "q023", section: "Uso da língua · A2", type: "complete", text: "Choose the option that completes the sentence.", template: "When I was a child, I {{answer}} soccer every day.", options: ["play", "played", "playing", "plays"], answer: 1 },
 
-  { section: "Estruturas avançadas · A2", type: "choice", text: "Choose the Zero Conditional.", options: ["If it rains tomorrow, I will stay home.", "If I were rich, I would travel.", "If you heat ice, it melts.", "If I studied, I would pass."], answer: 2 },
-  { section: "Estruturas avançadas · A2", type: "complete", text: "Complete the First Conditional.", template: "If it rains tomorrow, we {{answer}} at home.", options: ["stayed", "stay yesterday", "will stay", "would stayed"], answer: 2 },
-  { section: "Estruturas avançadas · A2", type: "complete", text: "Complete the Second Conditional.", template: "If I had more money, I {{answer}} around the world.", options: ["travel", "will travel", "would travel", "traveled yesterday"], answer: 2 },
-  { section: "Estruturas avançadas · A2", type: "choice", text: "Which sentence is in the passive voice?", options: ["Julia bought the book.", "Julia is buying the book.", "The book was bought by Julia.", "Julia buys books."], answer: 2 },
-  { section: "Estruturas avançadas · A2", type: "choice", text: "Choose the correct passive form for: “They built a new shopping mall.”", options: ["A new shopping mall built them.", "A new shopping mall was built.", "A new shopping mall is build.", "A new shopping mall were built."], answer: 1 },
-  { section: "Estruturas avançadas · A2", type: "choice", text: "Which word is related to movies?", options: ["plot", "bookshelf", "countryside", "newspaper"], answer: 0 },
-  { section: "Estruturas avançadas · A2", type: "complete", text: "Choose the option that completes the sentence.", template: "Have you ever {{answer}} abroad?", options: ["travel", "travels", "travelled", "travelling"], answer: 2 },
+  { id: "q024", section: "Estruturas avançadas · A2", type: "choice", text: "Choose the Zero Conditional.", options: ["If it rains tomorrow, I will stay home.", "If I were rich, I would travel.", "If you heat ice, it melts.", "If I studied, I would pass."], answer: 2 },
+  { id: "q025", section: "Estruturas avançadas · A2", type: "complete", text: "Complete the First Conditional.", template: "If it rains tomorrow, we {{answer}} at home.", options: ["stayed", "stay yesterday", "will stay", "would stayed"], answer: 2 },
+  { id: "q026", section: "Estruturas avançadas · A2", type: "complete", text: "Complete the Second Conditional.", template: "If I had more money, I {{answer}} around the world.", options: ["travel", "will travel", "would travel", "traveled yesterday"], answer: 2 },
+  { id: "q027", section: "Estruturas avançadas · A2", type: "choice", text: "Which sentence is in the passive voice?", options: ["Julia bought the book.", "Julia is buying the book.", "The book was bought by Julia.", "Julia buys books."], answer: 2 },
+  { id: "q028", section: "Estruturas avançadas · A2", type: "choice", text: "Choose the correct passive form for: “They built a new shopping mall.”", options: ["A new shopping mall built them.", "A new shopping mall was built.", "A new shopping mall is build.", "A new shopping mall were built."], answer: 1 },
+  { id: "q029", section: "Estruturas avançadas · A2", type: "choice", text: "Which word is related to movies?", options: ["plot", "bookshelf", "countryside", "newspaper"], answer: 0 },
+  { id: "q030", section: "Estruturas avançadas · A2", type: "complete", text: "Choose the option that completes the sentence.", template: "Have you ever {{answer}} abroad?", options: ["travel", "travels", "travelled", "travelling"], answer: 2 },
 ];
 
 const STORAGE_KEY = "englishAssessmentProgress";
-const PERSISTENCE_PREF_KEY = "englishAssessmentPersistenceEnabled";
 const LEGACY_STORAGE_KEYS = ["englishAssessmentProgressV2", "englishAssessmentProgressV1"];
+const OLD_PERSISTENCE_PREF_KEY = "englishAssessmentPersistenceEnabled";
 
 const $ = (selector) => document.querySelector(selector);
 const startScreen = $("#startScreen");
@@ -61,9 +61,6 @@ const overviewButton = $("#overviewButton");
 const overview = $("#overview");
 const settingsButton = $("#settingsButton");
 const settingsMenu = $("#settingsMenu");
-const persistenceButton = $("#persistenceButton");
-const persistenceStatus = $("#persistenceStatus");
-const storageMeta = $("#storageMeta");
 const resetAssessmentButton = $("#resetAssessmentButton");
 const resetDialog = $("#resetDialog");
 const confirmResetButton = $("#confirmResetButton");
@@ -73,6 +70,8 @@ const scoreValue = $("#scoreValue");
 const scorePercent = $("#scorePercent");
 const levelFeedback = $("#levelFeedback");
 const sectionResults = $("#sectionResults");
+const shareResultsButton = $("#shareResultsButton");
+const shareStatus = $("#shareStatus");
 const restartButton = $("#restartButton");
 const startQuestionCount = $("#startQuestionCount");
 
@@ -80,10 +79,9 @@ let currentQuestion = 0;
 let answers = Array(questions.length).fill(null);
 let student = { name: "" };
 let assessmentCompleted = false;
-let persistenceEnabled = localStorage.getItem(PERSISTENCE_PREF_KEY) !== "false";
 
 startQuestionCount.textContent = `${questions.length} questões`;
-updatePersistenceUi();
+localStorage.removeItem(OLD_PERSISTENCE_PREF_KEY);
 
 function escapeHtml(value) {
   return String(value)
@@ -102,7 +100,7 @@ function hashString(value) {
   return (hash >>> 0).toString(36);
 }
 
-function getQuestionId(question) {
+function getLegacyQuestionId(question) {
   const source = [question.section, question.type, question.template || question.text, ...question.options].join("|");
   return `q-${hashString(source)}`;
 }
@@ -110,22 +108,26 @@ function getQuestionId(question) {
 function buildStoredPayload() {
   const answersById = {};
   questions.forEach((question, index) => {
-    if (answers[index] !== null) answersById[getQuestionId(question)] = answers[index];
+    if (answers[index] !== null) answersById[question.id] = question.options[answers[index]];
   });
 
   return {
-    schemaVersion: 1,
+    schemaVersion: 2,
     student,
     answersById,
-    currentQuestionId: getQuestionId(questions[currentQuestion]),
+    currentQuestionId: questions[currentQuestion]?.id || questions[0].id,
     completed: assessmentCompleted,
     savedAt: new Date().toISOString(),
   };
 }
 
 function saveProgress() {
-  if (!persistenceEnabled || !student.name) return;
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(buildStoredPayload()));
+  if (!student.name) return;
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(buildStoredPayload()));
+  } catch {
+    // O navegador pode bloquear armazenamento em alguns modos privados.
+  }
 }
 
 function clearProgress() {
@@ -142,7 +144,10 @@ function migrateLegacyProgress() {
       if (!saved?.student?.name || !Array.isArray(saved.answers)) continue;
 
       student = { name: saved.student.name };
-      answers = questions.map((_, index) => saved.answers[index] ?? null);
+      answers = questions.map((question, index) => {
+        const value = saved.answers[index];
+        return Number.isInteger(value) && value >= 0 && value < question.options.length ? value : null;
+      });
       currentQuestion = Math.min(Math.max(saved.currentQuestion ?? 0, 0), questions.length - 1);
       assessmentCompleted = false;
       saveProgress();
@@ -155,42 +160,49 @@ function migrateLegacyProgress() {
   return false;
 }
 
-function restoreProgress() {
-  if (!persistenceEnabled) return false;
+function restoreAnswer(question, savedAnswers) {
+  const storedValue = savedAnswers[question.id] ?? savedAnswers[getLegacyQuestionId(question)];
 
+  if (typeof storedValue === "string") {
+    const optionIndex = question.options.indexOf(storedValue);
+    return optionIndex >= 0 ? optionIndex : null;
+  }
+
+  if (Number.isInteger(storedValue) && storedValue >= 0 && storedValue < question.options.length) {
+    return storedValue;
+  }
+
+  return null;
+}
+
+function restoreProgress() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return migrateLegacyProgress();
 
     const saved = JSON.parse(raw);
-    if (!saved?.student?.name || !saved.answersById || typeof saved.answersById !== "object") return migrateLegacyProgress();
+    if (!saved?.student?.name || !saved.answersById || typeof saved.answersById !== "object") {
+      return migrateLegacyProgress();
+    }
 
     student = { name: saved.student.name };
-    answers = questions.map((question) => {
-      const storedAnswer = saved.answersById[getQuestionId(question)];
-      return Number.isInteger(storedAnswer) ? storedAnswer : null;
-    });
+    answers = questions.map((question) => restoreAnswer(question, saved.answersById));
 
-    const storedQuestionIndex = questions.findIndex((question) => getQuestionId(question) === saved.currentQuestionId);
+    let storedQuestionIndex = questions.findIndex((question) => question.id === saved.currentQuestionId);
+    if (storedQuestionIndex < 0) {
+      storedQuestionIndex = questions.findIndex((question) => getLegacyQuestionId(question) === saved.currentQuestionId);
+    }
+
     const firstUnanswered = answers.findIndex((answer) => answer === null);
     currentQuestion = storedQuestionIndex >= 0 ? storedQuestionIndex : firstUnanswered >= 0 ? firstUnanswered : 0;
     assessmentCompleted = Boolean(saved.completed) && answers.every((answer) => answer !== null);
+
+    saveProgress();
     return true;
   } catch {
     localStorage.removeItem(STORAGE_KEY);
     return migrateLegacyProgress();
   }
-}
-
-function updatePersistenceUi() {
-  if (!persistenceButton || !persistenceStatus || !storageMeta) return;
-  persistenceButton.setAttribute("aria-pressed", persistenceEnabled ? "true" : "false");
-  persistenceStatus.textContent = persistenceEnabled
-    ? "Ativado · recupera suas respostas ao voltar"
-    : "Desativado · respostas ficam somente nesta sessão";
-  storageMeta.textContent = persistenceEnabled
-    ? "Progresso salvo automaticamente"
-    : "Salvamento neste dispositivo desativado";
 }
 
 function hideAllScreens() {
@@ -311,20 +323,21 @@ function getScore() {
 }
 
 function getSectionScores() {
-  const groups = [
-    { label: "Fundamentos", start: 0, end: 7 },
-    { label: "Estruturas", start: 8, end: 15 },
-    { label: "Uso da língua", start: 16, end: 22 },
-    { label: "Estruturas avançadas", start: 23, end: 29 },
-  ];
+  const sectionOrder = [];
+  const sections = new Map();
 
-  return groups.map((group) => {
-    let correct = 0;
-    for (let index = group.start; index <= group.end; index += 1) {
-      if (answers[index] === questions[index].answer) correct += 1;
+  questions.forEach((question, index) => {
+    const label = question.section.split(" · ")[0];
+    if (!sections.has(label)) {
+      sections.set(label, { label, correct: 0, total: 0 });
+      sectionOrder.push(label);
     }
-    return { ...group, correct, total: group.end - group.start + 1 };
+    const group = sections.get(label);
+    group.total += 1;
+    if (answers[index] === question.answer) group.correct += 1;
   });
+
+  return sectionOrder.map((label) => sections.get(label));
 }
 
 function getFeedback(percent) {
@@ -349,8 +362,72 @@ function showResults() {
       <strong>${escapeHtml(label)}</strong>
       <span>${correct}/${total}</span>
     </div>`).join("");
+  shareStatus.textContent = "";
 
   window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function getWrittenShareLines() {
+  // A segunda sessão de escrita poderá acrescentar as respostas aqui.
+  return [];
+}
+
+function buildShareText() {
+  const score = getScore();
+  const percent = Math.round((score / questions.length) * 100);
+  const sectionLines = getSectionScores().map(({ label, correct, total }) => `${label}: ${correct}/${total}`);
+  const writtenLines = getWrittenShareLines();
+
+  return [
+    "Avaliação de Inglês — resultado",
+    `Aluno: ${student.name}`,
+    `Acertos: ${score}/${questions.length} (${percent}%)`,
+    "",
+    ...sectionLines,
+    ...(writtenLines.length ? ["", "Respostas escritas:", ...writtenLines] : []),
+  ].join("\n");
+}
+
+async function copyShareText(text) {
+  if (navigator.clipboard?.writeText) {
+    await navigator.clipboard.writeText(text);
+    return;
+  }
+
+  const textarea = document.createElement("textarea");
+  textarea.value = text;
+  textarea.setAttribute("readonly", "");
+  textarea.style.position = "fixed";
+  textarea.style.opacity = "0";
+  document.body.appendChild(textarea);
+  textarea.select();
+  document.execCommand("copy");
+  textarea.remove();
+}
+
+async function shareResults() {
+  const text = buildShareText();
+  shareStatus.textContent = "";
+
+  try {
+    if (navigator.share) {
+      await navigator.share({ title: "Resultado da Avaliação de Inglês", text });
+      shareStatus.textContent = "Resultado compartilhado.";
+      return;
+    }
+
+    await copyShareText(text);
+    shareStatus.textContent = "Resultado copiado para a área de transferência.";
+  } catch (error) {
+    if (error?.name === "AbortError") return;
+
+    try {
+      await copyShareText(text);
+      shareStatus.textContent = "Resultado copiado para a área de transferência.";
+    } catch {
+      shareStatus.textContent = "Não foi possível compartilhar neste navegador.";
+    }
+  }
 }
 
 function submitAssessment() {
@@ -413,6 +490,7 @@ studentForm.addEventListener("submit", (event) => {
 prevButton.addEventListener("click", () => goToQuestion(currentQuestion - 1));
 nextButton.addEventListener("click", () => goToQuestion(currentQuestion + 1));
 submitButton.addEventListener("click", submitAssessment);
+shareResultsButton.addEventListener("click", shareResults);
 
 overviewButton.addEventListener("click", () => {
   const opening = overview.classList.contains("is-hidden");
@@ -423,21 +501,6 @@ overviewButton.addEventListener("click", () => {
 settingsButton.addEventListener("click", () => {
   if (settingsMenu.classList.contains("is-hidden")) openSettingsMenu();
   else closeSettingsMenu();
-});
-
-persistenceButton.addEventListener("click", () => {
-  if (persistenceEnabled) {
-    const confirmed = confirm("Desativar o salvamento neste dispositivo? O progresso salvo será removido e, ao sair da página, as respostas poderão ser perdidas.");
-    if (!confirmed) return;
-    persistenceEnabled = false;
-    localStorage.setItem(PERSISTENCE_PREF_KEY, "false");
-    clearProgress();
-  } else {
-    persistenceEnabled = true;
-    localStorage.setItem(PERSISTENCE_PREF_KEY, "true");
-    saveProgress();
-  }
-  updatePersistenceUi();
 });
 
 resetAssessmentButton.addEventListener("click", openResetDialog);
