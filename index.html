@@ -26,7 +26,7 @@
 
       <div class="assessment-meta" aria-label="Informações da avaliação">
         <span id="startQuestionCount">30 questões</span>
-        <span id="storageMeta">Progresso salvo automaticamente</span>
+        <span>Progresso salvo automaticamente</span>
       </div>
     </section>
 
@@ -49,10 +49,10 @@
 
       <div id="settingsMenu" class="settings-menu is-hidden" role="menu">
         <p>Opções</p>
-        <button id="persistenceButton" type="button" role="menuitem">
-          <span>Salvar progresso neste dispositivo</span>
-          <small id="persistenceStatus">Ativado · recupera suas respostas ao voltar</small>
-        </button>
+        <div class="menu-info" aria-label="Salvamento automático">
+          <span>Progresso salvo automaticamente</span>
+          <small>As respostas ficam neste dispositivo mesmo se você sair ou atualizar a página.</small>
+        </div>
         <button id="resetAssessmentButton" class="menu-danger" type="button" role="menuitem">
           <span>Apagar respostas e voltar ao início</span>
           <small>Reinicia esta avaliação neste dispositivo</small>
@@ -108,7 +108,14 @@
       <div id="levelFeedback" class="level-feedback"></div>
       <div id="sectionResults" class="section-results"></div>
 
-      <button id="restartButton" class="button button-secondary" type="button">Voltar ao início</button>
+      <div class="result-actions">
+        <button id="shareResultsButton" class="button button-share" type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V3m0 0L7 8m5-5 5 5M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>
+          <span>Compartilhar acertos</span>
+        </button>
+        <p id="shareStatus" class="share-status" role="status" aria-live="polite"></p>
+        <button id="restartButton" class="button button-secondary" type="button">Voltar ao início</button>
+      </div>
     </section>
   </main>
 
