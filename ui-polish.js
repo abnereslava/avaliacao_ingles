@@ -3,6 +3,7 @@
   const startScreen = document.querySelector('#startScreen');
   const questionCard = document.querySelector('.question-card');
   const questionText = document.querySelector('#questionText');
+  const questionCounterNode = document.querySelector('#questionCounter');
   const options = document.querySelector('#options');
   const readingContainer = document.querySelector('#readingContainer');
   const writingContainer = document.querySelector('#writingContainer');
@@ -14,6 +15,51 @@
   // Keep the question type (Complete / Choose / Context), but hide internal category labels.
   const sectionPill = document.querySelector('#questionSection');
   if (sectionPill) sectionPill.setAttribute('aria-hidden', 'true');
+
+  // Replace the former emoji illustrations with real stock photography.
+  const stockVisuals = {
+    'cat-under-table': {
+      src: 'https://images.pexels.com/photos/36427304/pexels-photo-36427304.jpeg?auto=compress&cs=tinysrgb&w=1000',
+      alt: 'A cat hiding underneath a table',
+      caption: 'Look at the position',
+      position: 'center 48%',
+    },
+    'hotel-trip': {
+      src: 'https://images.pexels.com/photos/12663057/pexels-photo-12663057.jpeg?auto=compress&cs=tinysrgb&w=1000',
+      alt: 'A traveller with a suitcase inside a hotel room',
+      caption: 'Travel plan',
+      position: 'center 74%',
+    },
+    'missed-bus': {
+      src: 'https://images.pexels.com/photos/16470272/pexels-photo-16470272.jpeg?auto=compress&cs=tinysrgb&w=1000',
+      alt: 'A person running beside a bus',
+      caption: 'What is probably happening?',
+      position: 'center 55%',
+    },
+  };
+
+  if (typeof renderVisual === 'function') {
+    renderVisual = function (name) {
+      const visual = stockVisuals[name];
+      if (!visual) {
+        questionVisual.innerHTML = '';
+        return;
+      }
+
+      questionVisual.innerHTML = `
+        <figure class="visual-scene stock-visual" aria-label="${escapeHtml(visual.alt)}">
+          <img
+            class="stock-photo"
+            src="${visual.src}"
+            alt="${escapeHtml(visual.alt)}"
+            loading="eager"
+            decoding="async"
+            style="object-position:${visual.position}"
+          />
+          <figcaption class="scene-caption">${escapeHtml(visual.caption)}</figcaption>
+        </figure>`;
+    };
+  }
 
   const style = document.createElement('style');
   style.textContent = `
@@ -33,9 +79,30 @@
       align-items: stretch;
     }
 
-    /* Slightly calmer spacing now that the category pill is gone. */
     .question-card h2 {
       margin-top: 0;
+    }
+
+    /* Real-photo question visuals. */
+    .visual-scene.stock-visual {
+      min-height: clamp(130px, 24vh, 210px);
+      padding: 0 !important;
+      background: #e9e9e5;
+    }
+
+    .stock-visual .stock-photo {
+      display: block;
+      width: 100%;
+      height: 100%;
+      min-height: inherit;
+      object-fit: cover;
+      border-radius: inherit;
+    }
+
+    .stock-visual .scene-caption {
+      left: 12px;
+      bottom: 10px;
+      box-shadow: 0 4px 16px rgba(0,0,0,.08);
     }
 
     /* Interface motion */
@@ -129,6 +196,13 @@
       transition: width .32s cubic-bezier(.2,.75,.25,1) !important;
     }
 
+    @media (min-width: 641px) and (max-height: 760px) {
+      .visual-scene.stock-visual {
+        min-height: 78px;
+        max-height: 105px;
+      }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
         scroll-behavior: auto !important;
@@ -140,6 +214,12 @@
   `;
   document.head.appendChild(style);
 
+  let lastAnimatedQuestionKey = null;
+
+  function getQuestionKey() {
+    return `${questionCounterNode?.textContent || ''}|${questionText?.textContent || ''}`;
+  }
+
   function animateOptions() {
     if (!options) return;
     [...options.querySelectorAll('.option')].forEach((button, index) => {
@@ -150,8 +230,12 @@
     });
   }
 
-  function animateQuestion() {
+  function animateQuestionIfChanged(force = false) {
     if (!questionCard) return;
+    const key = getQuestionKey();
+    if (!force && key === lastAnimatedQuestionKey) return;
+    lastAnimatedQuestionKey = key;
+
     questionCard.classList.remove('question-enter');
     void questionCard.offsetWidth;
     questionCard.classList.add('question-enter');
@@ -183,15 +267,28 @@
   }
 
   if (questionText) {
-    new MutationObserver(animateQuestion).observe(questionText, {
+    new MutationObserver(() => requestAnimationFrame(() => animateQuestionIfChanged(false))).observe(questionText, {
       childList: true,
       characterData: true,
       subtree: true,
     });
   }
 
+  if (questionCounterNode) {
+    new MutationObserver(() => requestAnimationFrame(() => animateQuestionIfChanged(false))).observe(questionCounterNode, {
+      childList: true,
+      characterData: true,
+      subtree: true,
+    });
+  }
+
+  // Do not replay entrance animations when an answer is merely selected or changed.
   if (options) {
-    new MutationObserver(() => requestAnimationFrame(animateOptions)).observe(options, { childList: true });
+    new MutationObserver(() => {
+      requestAnimationFrame(() => {
+        if (getQuestionKey() !== lastAnimatedQuestionKey) animateQuestionIfChanged(false);
+      });
+    }).observe(options, { childList: true });
   }
 
   if (readingContainer) {
@@ -210,7 +307,7 @@
   }
 
   // Initial state for restored sessions.
-  animateQuestion();
+  animateQuestionIfChanged(true);
   animateCards(readingContainer, '.reading-card');
   animateCards(writingContainer, '.writing-card');
   animateResults();
