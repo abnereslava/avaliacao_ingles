@@ -150,3 +150,12 @@
   script.dataset.uiPolishLoader = 'true';
   document.body.appendChild(script);
 })();
+
+// Load the linear-flow and visual-question experience layer.
+(function () {
+  if (document.querySelector('script[data-quiz-experience-loader]')) return;
+  const script = document.createElement('script');
+  script.src = 'quiz-experience.js';
+  script.dataset.quizExperienceLoader = 'true';
+  document.body.appendChild(script);
+})();
