@@ -132,3 +132,12 @@
     });
   });
 })();
+
+// Load reliability fixes after all assessment scripts are ready.
+(function () {
+  if (document.querySelector('script[data-reliability-loader]')) return;
+  const script = document.createElement('script');
+  script.src = 'reliability.js';
+  script.dataset.reliabilityLoader = 'true';
+  document.body.appendChild(script);
+})();
