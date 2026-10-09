@@ -1,5 +1,5 @@
 // Keyboard shortcuts for the objective section.
-// 1–4 select an answer; focus then moves to the forward button so Enter advances.
+// 1–4 select an answer; Enter advances once the current question is answered.
 (function () {
   const quiz = document.querySelector("#quizScreen");
   const options = document.querySelector("#options");
@@ -77,6 +77,27 @@
     overview.prepend(closeButton);
   }
 
+  function currentQuestionIsAnswered() {
+    if (typeof questions === "undefined" || typeof currentQuestion === "undefined" || typeof objectiveAnswers === "undefined") return false;
+    const question = questions[currentQuestion];
+    return Boolean(question && Number.isInteger(objectiveAnswers[question.id]));
+  }
+
+  function getForwardButton() {
+    return next && !next.classList.contains("is-hidden") ? next : toReading;
+  }
+
+  function focusForwardWhenReady() {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        const forwardButton = getForwardButton();
+        if (forwardButton && !forwardButton.disabled) {
+          forwardButton.focus({ preventScroll: true });
+        }
+      });
+    });
+  }
+
   annotateOptions();
   new MutationObserver(annotateOptions).observe(options, { childList: true });
 
@@ -117,6 +138,17 @@
       if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || target.isContentEditable) return;
     }
 
+    // Enter explicitly advances after a valid answer. This no longer depends on
+    // focus having successfully landed on the Próxima button first.
+    if (event.key === "Enter") {
+      if (!currentQuestionIsAnswered()) return;
+      const forwardButton = getForwardButton();
+      if (!forwardButton || forwardButton.disabled) return;
+      event.preventDefault();
+      forwardButton.click();
+      return;
+    }
+
     if (!/^[1-4]$/.test(event.key)) return;
 
     const index = Number(event.key) - 1;
@@ -125,11 +157,7 @@
 
     event.preventDefault();
     answerButton.click();
-
-    requestAnimationFrame(() => {
-      const forwardButton = next && !next.classList.contains("is-hidden") ? next : toReading;
-      forwardButton?.focus({ preventScroll: true });
-    });
+    focusForwardWhenReady();
   });
 })();
 
