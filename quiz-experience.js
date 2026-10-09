@@ -11,7 +11,7 @@
 
   if (!quizScreen || !questionCard || !options || !nextButton || !toReadingButton) return;
 
-  // The test is now intentionally linear. Keep the overview node for legacy code,
+  // The test is intentionally linear. Keep the overview node for legacy code,
   // but remove its UI so students cannot jump ahead.
   if (overviewButton) overviewButton.style.display = 'none';
   if (overview) overview.classList.add('is-hidden');
@@ -21,8 +21,8 @@
     #overviewButton { display: none !important; }
     #overview { display: none !important; }
 
-    /* A visual question gets a media-first layout instead of squeezing the photo
-       into a shallow strip. The complete image remains visible. */
+    /* Visual questions use a media-first layout. The whole photo stays visible
+       rather than being cropped into a shallow banner. */
     .question-card.has-visual-question .visual-scene.stock-visual {
       width: 100% !important;
       height: auto !important;
@@ -52,7 +52,6 @@
       max-width: calc(100% - 20px);
     }
 
-    /* Make the locked forward state obvious without adding extra copy. */
     .quiz-nav .button:disabled {
       opacity: .36 !important;
       cursor: not-allowed !important;
@@ -62,14 +61,14 @@
     @media (min-width: 641px) {
       .question-card.has-visual-question {
         display: grid !important;
-        grid-template-columns: minmax(260px, .95fr) minmax(330px, 1.05fr);
+        grid-template-columns: minmax(270px, .95fr) minmax(330px, 1.05fr);
         grid-template-areas:
           "meta meta"
           "title title"
           "context context"
           "interaction interaction"
           "visual answers";
-        column-gap: clamp(16px, 2.5vw, 24px);
+        column-gap: clamp(18px, 2.7vw, 26px);
         row-gap: clamp(8px, 1.2vh, 14px);
         align-content: start !important;
         align-items: start !important;
@@ -105,11 +104,33 @@
   `;
   document.head.appendChild(style);
 
+  function isAnsweredAt(index) {
+    if (typeof questions === 'undefined' || typeof objectiveAnswers === 'undefined') return false;
+    const question = questions[index];
+    return Boolean(question) && Number.isInteger(objectiveAnswers[question.id]);
+  }
+
   function currentQuestionIsAnswered() {
-    if (typeof questions === 'undefined' || typeof currentQuestion === 'undefined') return false;
-    const question = questions[currentQuestion];
-    if (!question || typeof objectiveAnswers === 'undefined') return false;
-    return Number.isInteger(objectiveAnswers[question.id]);
+    if (typeof currentQuestion === 'undefined') return false;
+    return isAnsweredAt(currentQuestion);
+  }
+
+  function allQuestionsThrough(index) {
+    if (typeof questions === 'undefined') return false;
+    const safeIndex = Math.min(Math.max(index, 0), questions.length - 1);
+    for (let i = 0; i <= safeIndex; i += 1) {
+      if (!isAnsweredAt(i)) return false;
+    }
+    return true;
+  }
+
+  function firstUnansweredThrough(index) {
+    if (typeof questions === 'undefined') return -1;
+    const safeIndex = Math.min(Math.max(index, 0), questions.length - 1);
+    for (let i = 0; i <= safeIndex; i += 1) {
+      if (!isAnsweredAt(i)) return i;
+    }
+    return -1;
   }
 
   function currentQuestionHasVisual() {
@@ -117,59 +138,82 @@
     return Boolean(questions[currentQuestion]?.visual);
   }
 
+  function progressionIsSatisfied() {
+    if (typeof currentQuestion === 'undefined') return false;
+    return currentQuestionIsAnswered() && allQuestionsThrough(currentQuestion);
+  }
+
   function applyQuestionState() {
-    const answered = currentQuestionIsAnswered();
+    const unlocked = progressionIsSatisfied();
     const hasVisual = currentQuestionHasVisual();
 
     questionCard.classList.toggle('has-visual-question', hasVisual);
-    nextButton.disabled = !answered;
-    toReadingButton.disabled = !answered;
+    nextButton.disabled = !unlocked;
+    toReadingButton.disabled = !unlocked;
 
-    nextButton.setAttribute('aria-disabled', answered ? 'false' : 'true');
-    toReadingButton.setAttribute('aria-disabled', answered ? 'false' : 'true');
+    nextButton.setAttribute('aria-disabled', unlocked ? 'false' : 'true');
+    toReadingButton.setAttribute('aria-disabled', unlocked ? 'false' : 'true');
 
-    // A stale overview must never become a way to jump forward.
     if (overview) overview.classList.add('is-hidden');
   }
 
   function showAnswerRequiredMessage() {
     if (!quizMessage) return;
-    quizMessage.textContent = 'Selecione uma resposta antes de continuar.';
+    const missing = firstUnansweredThrough(currentQuestion);
+    quizMessage.textContent = missing >= 0 && missing !== currentQuestion
+      ? `Responda primeiro a questão ${missing + 1}.`
+      : 'Selecione uma resposta antes de continuar.';
   }
 
-  // Safety guard in addition to the disabled state. This also blocks synthetic
-  // activation or an old browser state from advancing an unanswered question.
   nextButton.addEventListener('click', (event) => {
-    if (currentQuestionIsAnswered()) return;
+    if (progressionIsSatisfied()) return;
     event.preventDefault();
     event.stopImmediatePropagation();
     showAnswerRequiredMessage();
   }, true);
 
   toReadingButton.addEventListener('click', (event) => {
-    if (currentQuestionIsAnswered()) return;
+    if (progressionIsSatisfied() && allQuestionsThrough(questions.length - 1)) return;
     event.preventDefault();
     event.stopImmediatePropagation();
-    showAnswerRequiredMessage();
+    const missing = firstUnansweredThrough(questions.length - 1);
+    if (missing >= 0 && typeof goToQuestion === 'function') {
+      goToQuestion(missing);
+      if (quizMessage) quizMessage.textContent = `Responda primeiro a questão ${missing + 1}.`;
+    } else {
+      showAnswerRequiredMessage();
+    }
   }, true);
 
-  // Prevent any programmatic forward jump while the current question is unanswered.
   if (typeof goToQuestion === 'function') {
     const originalGoToQuestion = goToQuestion;
     goToQuestion = function (index) {
       const target = Math.min(Math.max(index, 0), questions.length - 1);
-      if (target > currentQuestion && !currentQuestionIsAnswered()) {
-        showAnswerRequiredMessage();
-        applyQuestionState();
-        return;
+
+      if (target > currentQuestion) {
+        const firstMissingBeforeTarget = firstUnansweredThrough(target - 1);
+        if (firstMissingBeforeTarget >= 0) {
+          originalGoToQuestion(firstMissingBeforeTarget);
+          if (quizMessage) quizMessage.textContent = `Responda primeiro a questão ${firstMissingBeforeTarget + 1}.`;
+          requestAnimationFrame(applyQuestionState);
+          return;
+        }
       }
+
       originalGoToQuestion(target);
       requestAnimationFrame(applyQuestionState);
     };
   }
 
-  // renderQuestion rebuilds the answer buttons after every selection, so reapply
-  // the lock and the visual layout whenever that DOM changes.
+  // Old saved sessions may have the student positioned after an unanswered item.
+  // Bring them back to the earliest gap before allowing progression again.
+  if (typeof currentQuestion !== 'undefined' && typeof goToQuestion === 'function') {
+    const missingBeforeCurrent = firstUnansweredThrough(currentQuestion);
+    if (missingBeforeCurrent >= 0 && missingBeforeCurrent < currentQuestion) {
+      goToQuestion(missingBeforeCurrent);
+    }
+  }
+
   new MutationObserver(() => requestAnimationFrame(applyQuestionState))
     .observe(options, { childList: true, subtree: false });
 
