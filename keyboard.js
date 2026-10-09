@@ -7,41 +7,38 @@
   const toReading = document.querySelector("#toReadingButton");
   const settings = document.querySelector("#settingsMenu");
   const reset = document.querySelector("#resetDialog");
+  const overview = document.querySelector("#overview");
+  const overviewButton = document.querySelector("#overviewButton");
 
   if (!quiz || !options) return;
 
-  const hint = document.createElement("div");
-  hint.className = "keyboard-hint";
-  hint.setAttribute("aria-label", "Atalhos de teclado: teclas 1 a 4 selecionam uma resposta e Enter avança");
-  hint.innerHTML = "Atalhos: <kbd>1</kbd>–<kbd>4</kbd> selecionam · <kbd>Enter</kbd> avança";
-  options.insertAdjacentElement("afterend", hint);
-
   const style = document.createElement("style");
   style.textContent = `
-    .keyboard-hint {
-      margin-top: 10px;
-      color: var(--muted);
-      font-size: .76rem;
-      text-align: center;
-      user-select: none;
+    .overview-close {
+      grid-column: 1 / -1;
+      justify-self: end;
+      width: auto !important;
+      aspect-ratio: auto !important;
+      min-height: 34px;
+      padding: 6px 12px;
+      border: 1px solid var(--border) !important;
+      border-radius: 999px !important;
+      background: var(--surface) !important;
+      color: var(--text) !important;
+      font-size: .8rem !important;
+      font-weight: 750;
     }
-    .keyboard-hint kbd {
-      display: inline-grid;
-      min-width: 1.55em;
-      height: 1.55em;
-      place-items: center;
-      padding: 0 .28em;
-      border: 1px solid var(--border);
-      border-bottom-width: 2px;
-      border-radius: 5px;
-      background: var(--surface);
-      color: var(--text);
-      font: inherit;
-      font-weight: 800;
-      line-height: 1;
+
+    .overview-close:hover {
+      border-color: #bdbdb6 !important;
+      background: var(--surface-soft) !important;
     }
-    @media (max-width: 640px), (pointer: coarse) {
-      .keyboard-hint { display: none; }
+
+    @media (min-width: 641px) {
+      .overview:not(.is-hidden) {
+        max-height: calc(100dvh - 105px);
+        overflow-y: auto;
+      }
     }
   `;
   document.head.appendChild(style);
@@ -55,14 +52,64 @@
     });
   }
 
+  function hideOverview() {
+    if (!overview || !overviewButton) return;
+    overview.classList.add("is-hidden");
+    overviewButton.textContent = "Ver questões respondidas";
+    overviewButton.setAttribute("aria-expanded", "false");
+    overviewButton.focus({ preventScroll: true });
+  }
+
+  function ensureOverviewCloseButton() {
+    if (!overview || overview.classList.contains("is-hidden")) return;
+    if (overview.querySelector(".overview-close")) return;
+
+    const closeButton = document.createElement("button");
+    closeButton.type = "button";
+    closeButton.className = "overview-close";
+    closeButton.textContent = "Fechar";
+    closeButton.setAttribute("aria-label", "Fechar mapa de questões");
+    closeButton.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      hideOverview();
+    });
+    overview.prepend(closeButton);
+  }
+
   annotateOptions();
   new MutationObserver(annotateOptions).observe(options, { childList: true });
 
+  if (overview && overviewButton) {
+    overviewButton.setAttribute("aria-expanded", "false");
+
+    overviewButton.addEventListener("click", () => {
+      requestAnimationFrame(() => {
+        const isOpen = !overview.classList.contains("is-hidden");
+        overviewButton.setAttribute("aria-expanded", isOpen ? "true" : "false");
+        if (isOpen) ensureOverviewCloseButton();
+      });
+    });
+
+    overview.addEventListener("click", (event) => {
+      const target = event.target instanceof Element ? event.target.closest("button") : null;
+      if (!target || target.classList.contains("overview-close")) return;
+      requestAnimationFrame(hideOverview);
+    });
+  }
+
   document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && overview && !overview.classList.contains("is-hidden")) {
+      event.preventDefault();
+      hideOverview();
+      return;
+    }
+
     if (event.defaultPrevented || event.ctrlKey || event.altKey || event.metaKey) return;
     if (quiz.classList.contains("is-hidden")) return;
     if (reset?.open) return;
     if (settings && !settings.classList.contains("is-hidden")) return;
+    if (overview && !overview.classList.contains("is-hidden")) return;
 
     const target = event.target;
     if (target instanceof HTMLElement) {
