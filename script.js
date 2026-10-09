@@ -1,5 +1,5 @@
 const questions = [
-  { section: "Fundamentos · A1", type: "choice", text: "Choose the correct subject pronoun: “Maria is my friend. ___ is very nice.”", options: ["He", "She", "It", "They"], answer: 1 },
+  { section: "Fundamentos · A1", type: "complete", text: "Choose the option that completes the sentence.", template: "Maria is my friend. {{answer}} is very nice.", options: ["He", "She", "It", "They"], answer: 1 },
   { section: "Fundamentos · A1", type: "complete", text: "Choose the option that completes the sentence.", template: "My parents {{answer}} at home.", options: ["am", "is", "are", "be"], answer: 2 },
   { section: "Fundamentos · A1", type: "choice", text: "Choose the correct question.", options: ["You are happy?", "Are you happy?", "Is you happy?", "Do you are happy?"], answer: 1 },
   { section: "Fundamentos · A1", type: "choice", text: "Choose the correct negative sentence.", options: ["He not is tired.", "He doesn’t tired.", "He isn’t tired.", "He don’t tired."], answer: 2 },
@@ -34,8 +34,9 @@ const questions = [
   { section: "Estruturas avançadas · A2", type: "complete", text: "Choose the option that completes the sentence.", template: "Have you ever {{answer}} abroad?", options: ["travel", "travels", "travelled", "travelling"], answer: 2 },
 ];
 
-const STORAGE_KEY = "englishAssessmentProgressV2";
-const LEGACY_STORAGE_KEY = "englishAssessmentProgressV1";
+const STORAGE_KEY = "englishAssessmentProgress";
+const PERSISTENCE_PREF_KEY = "englishAssessmentPersistenceEnabled";
+const LEGACY_STORAGE_KEYS = ["englishAssessmentProgressV2", "englishAssessmentProgressV1"];
 
 const $ = (selector) => document.querySelector(selector);
 const startScreen = $("#startScreen");
@@ -60,6 +61,9 @@ const overviewButton = $("#overviewButton");
 const overview = $("#overview");
 const settingsButton = $("#settingsButton");
 const settingsMenu = $("#settingsMenu");
+const persistenceButton = $("#persistenceButton");
+const persistenceStatus = $("#persistenceStatus");
+const storageMeta = $("#storageMeta");
 const resetAssessmentButton = $("#resetAssessmentButton");
 const resetDialog = $("#resetDialog");
 const confirmResetButton = $("#confirmResetButton");
@@ -75,9 +79,11 @@ const startQuestionCount = $("#startQuestionCount");
 let currentQuestion = 0;
 let answers = Array(questions.length).fill(null);
 let student = { name: "" };
+let assessmentCompleted = false;
+let persistenceEnabled = localStorage.getItem(PERSISTENCE_PREF_KEY) !== "false";
 
 startQuestionCount.textContent = `${questions.length} questões`;
-localStorage.removeItem(LEGACY_STORAGE_KEY);
+updatePersistenceUi();
 
 function escapeHtml(value) {
   return String(value)
@@ -88,30 +94,103 @@ function escapeHtml(value) {
     .replaceAll("'", "&#039;");
 }
 
+function hashString(value) {
+  let hash = 5381;
+  for (let index = 0; index < value.length; index += 1) {
+    hash = ((hash << 5) + hash) ^ value.charCodeAt(index);
+  }
+  return (hash >>> 0).toString(36);
+}
+
+function getQuestionId(question) {
+  const source = [question.section, question.type, question.template || question.text, ...question.options].join("|");
+  return `q-${hashString(source)}`;
+}
+
+function buildStoredPayload() {
+  const answersById = {};
+  questions.forEach((question, index) => {
+    if (answers[index] !== null) answersById[getQuestionId(question)] = answers[index];
+  });
+
+  return {
+    schemaVersion: 1,
+    student,
+    answersById,
+    currentQuestionId: getQuestionId(questions[currentQuestion]),
+    completed: assessmentCompleted,
+    savedAt: new Date().toISOString(),
+  };
+}
+
 function saveProgress() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify({ student, answers, currentQuestion }));
+  if (!persistenceEnabled || !student.name) return;
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(buildStoredPayload()));
 }
 
 function clearProgress() {
   localStorage.removeItem(STORAGE_KEY);
-  localStorage.removeItem(LEGACY_STORAGE_KEY);
+  LEGACY_STORAGE_KEYS.forEach((key) => localStorage.removeItem(key));
+}
+
+function migrateLegacyProgress() {
+  for (const key of LEGACY_STORAGE_KEYS) {
+    try {
+      const raw = localStorage.getItem(key);
+      if (!raw) continue;
+      const saved = JSON.parse(raw);
+      if (!saved?.student?.name || !Array.isArray(saved.answers)) continue;
+
+      student = { name: saved.student.name };
+      answers = questions.map((_, index) => saved.answers[index] ?? null);
+      currentQuestion = Math.min(Math.max(saved.currentQuestion ?? 0, 0), questions.length - 1);
+      assessmentCompleted = false;
+      saveProgress();
+      LEGACY_STORAGE_KEYS.forEach((legacyKey) => localStorage.removeItem(legacyKey));
+      return true;
+    } catch {
+      localStorage.removeItem(key);
+    }
+  }
+  return false;
 }
 
 function restoreProgress() {
+  if (!persistenceEnabled) return false;
+
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return false;
+    if (!raw) return migrateLegacyProgress();
+
     const saved = JSON.parse(raw);
-    if (!saved?.student?.name || !Array.isArray(saved.answers)) return false;
+    if (!saved?.student?.name || !saved.answersById || typeof saved.answersById !== "object") return migrateLegacyProgress();
 
     student = { name: saved.student.name };
-    answers = questions.map((_, index) => saved.answers[index] ?? null);
-    currentQuestion = Math.min(Math.max(saved.currentQuestion ?? 0, 0), questions.length - 1);
+    answers = questions.map((question) => {
+      const storedAnswer = saved.answersById[getQuestionId(question)];
+      return Number.isInteger(storedAnswer) ? storedAnswer : null;
+    });
+
+    const storedQuestionIndex = questions.findIndex((question) => getQuestionId(question) === saved.currentQuestionId);
+    const firstUnanswered = answers.findIndex((answer) => answer === null);
+    currentQuestion = storedQuestionIndex >= 0 ? storedQuestionIndex : firstUnanswered >= 0 ? firstUnanswered : 0;
+    assessmentCompleted = Boolean(saved.completed) && answers.every((answer) => answer !== null);
     return true;
   } catch {
-    clearProgress();
-    return false;
+    localStorage.removeItem(STORAGE_KEY);
+    return migrateLegacyProgress();
   }
+}
+
+function updatePersistenceUi() {
+  if (!persistenceButton || !persistenceStatus || !storageMeta) return;
+  persistenceButton.setAttribute("aria-pressed", persistenceEnabled ? "true" : "false");
+  persistenceStatus.textContent = persistenceEnabled
+    ? "Ativado · recupera suas respostas ao voltar"
+    : "Desativado · respostas ficam somente nesta sessão";
+  storageMeta.textContent = persistenceEnabled
+    ? "Progresso salvo automaticamente"
+    : "Salvamento neste dispositivo desativado";
 }
 
 function hideAllScreens() {
@@ -190,6 +269,7 @@ function renderQuestion() {
 
     button.addEventListener("click", () => {
       answers[currentQuestion] = index;
+      assessmentCompleted = false;
       saveProgress();
       renderQuestion();
       renderOverview();
@@ -254,15 +334,7 @@ function getFeedback(percent) {
   return "A avaliação indica que uma revisão dos conteúdos-base pode ser útil antes de avançar para estruturas mais complexas.";
 }
 
-function submitAssessment() {
-  const unanswered = answers.map((answer, index) => (answer === null ? index : null)).filter((index) => index !== null);
-
-  if (unanswered.length) {
-    goToQuestion(unanswered[0]);
-    quizMessage.textContent = `Ainda faltam ${unanswered.length} ${unanswered.length === 1 ? "questão" : "questões"}.`;
-    return;
-  }
-
+function showResults() {
   const score = getScore();
   const percent = Math.round((score / questions.length) * 100);
 
@@ -278,8 +350,21 @@ function submitAssessment() {
       <span>${correct}/${total}</span>
     </div>`).join("");
 
-  clearProgress();
   window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function submitAssessment() {
+  const unanswered = answers.map((answer, index) => (answer === null ? index : null)).filter((index) => index !== null);
+
+  if (unanswered.length) {
+    goToQuestion(unanswered[0]);
+    quizMessage.textContent = `Ainda faltam ${unanswered.length} ${unanswered.length === 1 ? "questão" : "questões"}.`;
+    return;
+  }
+
+  assessmentCompleted = true;
+  saveProgress();
+  showResults();
 }
 
 function openSettingsMenu() {
@@ -303,6 +388,7 @@ function resetAssessment() {
   answers = Array(questions.length).fill(null);
   currentQuestion = 0;
   student = { name: "" };
+  assessmentCompleted = false;
   studentForm.reset();
   hideAllScreens();
   startScreen.classList.remove("is-hidden");
@@ -319,6 +405,7 @@ studentForm.addEventListener("submit", (event) => {
   student = { name };
   answers = Array(questions.length).fill(null);
   currentQuestion = 0;
+  assessmentCompleted = false;
   saveProgress();
   startQuiz();
 });
@@ -338,6 +425,21 @@ settingsButton.addEventListener("click", () => {
   else closeSettingsMenu();
 });
 
+persistenceButton.addEventListener("click", () => {
+  if (persistenceEnabled) {
+    const confirmed = confirm("Desativar o salvamento neste dispositivo? O progresso salvo será removido e, ao sair da página, as respostas poderão ser perdidas.");
+    if (!confirmed) return;
+    persistenceEnabled = false;
+    localStorage.setItem(PERSISTENCE_PREF_KEY, "false");
+    clearProgress();
+  } else {
+    persistenceEnabled = true;
+    localStorage.setItem(PERSISTENCE_PREF_KEY, "true");
+    saveProgress();
+  }
+  updatePersistenceUi();
+});
+
 resetAssessmentButton.addEventListener("click", openResetDialog);
 resultSettingsButton.addEventListener("click", openResetDialog);
 restartButton.addEventListener("click", openResetDialog);
@@ -351,7 +453,14 @@ document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") closeSettingsMenu();
 });
 
+window.addEventListener("pagehide", saveProgress);
+window.addEventListener("beforeunload", saveProgress);
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "hidden") saveProgress();
+});
+
 if (restoreProgress()) {
   studentNameInput.value = student.name;
-  startQuiz();
+  if (assessmentCompleted) showResults();
+  else startQuiz();
 }
