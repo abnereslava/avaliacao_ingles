@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f7f7f5" />
+  <meta name="description" content="Avaliação digital de Inglês — Teens 1 a 4" />
+  <title>Avaliação de Inglês | Teens 1–4</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="app-shell">
+    <section id="startScreen" class="screen start-screen" aria-labelledby="pageTitle">
+      <div class="brand-mark" aria-hidden="true">EN</div>
+      <p class="eyebrow">Avaliação digital</p>
+      <h1 id="pageTitle">English — Teens 1–4</h1>
+      <p class="lead">30 questões de múltipla escolha, do nível A1 ao A2.</p>
+
+      <form id="studentForm" class="student-form">
+        <label>
+          <span>Nome do aluno</span>
+          <input id="studentName" name="studentName" type="text" autocomplete="name" placeholder="Digite seu nome" required />
+        </label>
+        <label>
+          <span>Turma</span>
+          <input id="studentClass" name="studentClass" type="text" placeholder="Ex.: Teens 2" required />
+        </label>
+        <button class="button button-primary" type="submit">Começar avaliação</button>
+      </form>
+
+      <div class="assessment-meta" aria-label="Informações da avaliação">
+        <span>30 questões</span>
+        <span>4 alternativas</span>
+        <span>1 resposta correta</span>
+      </div>
+    </section>
+
+    <section id="quizScreen" class="screen quiz-screen is-hidden" aria-live="polite">
+      <header class="quiz-header">
+        <div>
+          <p class="eyebrow">English — Teens 1–4</p>
+          <p id="studentSummary" class="student-summary"></p>
+        </div>
+        <span id="questionCounter" class="question-counter">1 / 30</span>
+      </header>
+
+      <div class="progress-track" aria-hidden="true">
+        <div id="progressBar" class="progress-bar"></div>
+      </div>
+
+      <article class="question-card">
+        <p id="questionSection" class="section-pill"></p>
+        <h2 id="questionText"></h2>
+        <div id="questionVisual"></div>
+        <div id="options" class="options" role="radiogroup" aria-labelledby="questionText"></div>
+      </article>
+
+      <div id="quizMessage" class="quiz-message" role="status"></div>
+
+      <nav class="quiz-nav" aria-label="Navegação entre questões">
+        <button id="prevButton" class="button button-secondary" type="button">Anterior</button>
+        <button id="nextButton" class="button button-primary" type="button">Próxima</button>
+        <button id="submitButton" class="button button-primary is-hidden" type="button">Enviar avaliação</button>
+      </nav>
+
+      <button id="overviewButton" class="overview-link" type="button">Ver questões respondidas</button>
+      <div id="overview" class="overview is-hidden" aria-label="Mapa de questões"></div>
+    </section>
+
+    <section id="resultScreen" class="screen result-screen is-hidden" aria-labelledby="resultTitle">
+      <div class="result-badge" aria-hidden="true">✓</div>
+      <p class="eyebrow">Avaliação concluída</p>
+      <h1 id="resultTitle">Resultado</h1>
+      <p id="resultStudent" class="result-student"></p>
+
+      <div class="score-card">
+        <span id="scoreValue" class="score-value">0/30</span>
+        <span id="scorePercent" class="score-percent">0%</span>
+      </div>
+
+      <div id="levelFeedback" class="level-feedback"></div>
+      <div id="sectionResults" class="section-results"></div>
+
+      <button id="restartButton" class="button button-secondary" type="button">Refazer avaliação</button>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
