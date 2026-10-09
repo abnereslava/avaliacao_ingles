@@ -161,6 +161,54 @@
   });
 })();
 
+// Context blanks behave like the existing fill-in-the-blank questions.
+(function () {
+  if (typeof renderContext !== "function") return;
+
+  const contextStyle = document.createElement("style");
+  contextStyle.textContent = `
+    .context-card .context-inline-answer {
+      min-width: 86px;
+      margin: 0 .16em;
+      vertical-align: baseline;
+    }
+
+    .context-card .context-inline-answer.is-filled {
+      min-width: 0;
+      white-space: normal;
+    }
+  `;
+  document.head.appendChild(contextStyle);
+
+  renderContext = function (question) {
+    if (!question.context) {
+      questionContext.innerHTML = "";
+      return;
+    }
+
+    let html = escapeHtml(question.context).replaceAll("\n", "<br>");
+    const hasBlank = /_{3,}/.test(question.context);
+
+    if (hasBlank) {
+      const selectedIndex = objectiveAnswers?.[question.id];
+      const selectedValue = Number.isInteger(selectedIndex) ? question.options?.[selectedIndex] : null;
+      const blank = selectedValue
+        ? `<span class="inline-answer is-filled context-inline-answer">${escapeHtml(selectedValue)}</span>`
+        : `<span class="inline-answer context-inline-answer">&nbsp;</span>`;
+
+      html = html.replace(/_{3,}/g, blank);
+    }
+
+    questionContext.innerHTML = `<div class="context-card" aria-live="polite">${html}</div>`;
+  };
+
+  // Refresh only the context if the page was restored directly on such a question.
+  if (typeof questions !== "undefined" && typeof currentQuestion !== "undefined") {
+    const current = questions[currentQuestion];
+    if (current?.context) renderContext(current);
+  }
+})();
+
 // Load reliability fixes after all assessment scripts are ready.
 (function () {
   if (document.querySelector('script[data-reliability-loader]')) return;
