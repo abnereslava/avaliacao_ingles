@@ -77,6 +77,7 @@ let answers = Array(questions.length).fill(null);
 let student = { name: "" };
 
 startQuestionCount.textContent = `${questions.length} questões`;
+localStorage.removeItem(LEGACY_STORAGE_KEY);
 
 function escapeHtml(value) {
   return String(value)
@@ -130,8 +131,7 @@ function startQuiz() {
 }
 
 function renderCompleteSentence(question, selectedAnswer) {
-  const template = question.template;
-  let html = escapeHtml(template);
+  let html = escapeHtml(question.template);
 
   if (question.fills) {
     const fills = selectedAnswer === null ? [] : question.fills[selectedAnswer];
@@ -162,11 +162,8 @@ function renderQuestion() {
   questionText.textContent = question.text;
   quizMessage.textContent = "";
 
-  if (question.type === "complete") {
-    renderCompleteSentence(question, selectedAnswer);
-  } else {
-    questionInteraction.innerHTML = "";
-  }
+  if (question.type === "complete") renderCompleteSentence(question, selectedAnswer);
+  else questionInteraction.innerHTML = "";
 
   if (question.visual === "cat-under-table") {
     questionVisual.innerHTML = `
@@ -354,7 +351,6 @@ document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") closeSettingsMenu();
 });
 
-clearProgress();
 if (restoreProgress()) {
   studentNameInput.value = student.name;
   startQuiz();
