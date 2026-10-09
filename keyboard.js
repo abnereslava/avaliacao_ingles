@@ -141,3 +141,12 @@
   script.dataset.reliabilityLoader = 'true';
   document.body.appendChild(script);
 })();
+
+// Load visual polish after the functional layers.
+(function () {
+  if (document.querySelector('script[data-ui-polish-loader]')) return;
+  const script = document.createElement('script');
+  script.src = 'ui-polish.js';
+  script.dataset.uiPolishLoader = 'true';
+  document.body.appendChild(script);
+})();
