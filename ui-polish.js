@@ -38,6 +38,17 @@
     },
   };
 
+  // Keep the bus inference question neutral so it matches the photograph exactly.
+  const busQuestion = typeof questions !== 'undefined' ? questions.find((question) => question.id === 'd023') : null;
+  if (busQuestion) {
+    busQuestion.options = [
+      'The person is waiting calmly for a bus that has not arrived yet.',
+      'The person appears to be trying to catch a bus that is leaving.',
+      'The person has just got off the bus and is walking home.',
+      'The person is driving the bus to work.',
+    ];
+  }
+
   if (typeof renderVisual === 'function') {
     renderVisual = function (name) {
       const visual = stockVisuals[name];
@@ -59,6 +70,11 @@
           <figcaption class="scene-caption">${escapeHtml(visual.caption)}</figcaption>
         </figure>`;
     };
+  }
+
+  // If a restored session opens directly on a visual question, refresh that card immediately.
+  if (typeof currentStage !== 'undefined' && currentStage === 'quiz' && questions?.[currentQuestion]?.visual) {
+    renderQuestion();
   }
 
   const style = document.createElement('style');
