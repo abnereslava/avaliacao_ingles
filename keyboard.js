@@ -235,3 +235,12 @@
   script.dataset.quizExperienceLoader = 'true';
   document.body.appendChild(script);
 })();
+
+// Load the final image choices after the other visual layers.
+(function () {
+  if (document.querySelector('script[data-visual-assets-loader]')) return;
+  const script = document.createElement('script');
+  script.src = 'visual-assets.js';
+  script.dataset.visualAssetsLoader = 'true';
+  document.body.appendChild(script);
+})();
